@@ -51,7 +51,14 @@ function AppControl({ value, setValue, addTask }) {
 
 function App() {
   const [value, setValue] = useState('');
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    const saved = localStorage.getItem('tasks');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
 
   const addTask = (taskName) => {
     setTasks([
